@@ -1193,6 +1193,10 @@ public class GeoServerRESTPublisher {
         // config coverage props (srs)
         final GSFeatureTypeEncoder featureTypeEncoder = new GSFeatureTypeEncoder();
         featureTypeEncoder.setName(datasetName);
+        // Set native name
+        String nativeName = FilenameUtils.getBaseName(shapefile.toString());
+        LOGGER.warn("Setting native nam='{}'", nativeName);
+        featureTypeEncoder.setNativeName(nativeName);
         featureTypeEncoder.setTitle(title);
 
         // set destination srs
@@ -2965,6 +2969,8 @@ public class GeoServerRESTPublisher {
      */
     private boolean createResource(String workspace, StoreType dsType, String storeName,
             GSResourceEncoder re) throws IllegalArgumentException {
+        LOGGER.warn("Creating resource...");
+
         if (workspace == null || dsType == null || storeName == null || re == null) {
             throw new IllegalArgumentException("Null argument");
         }
@@ -2979,6 +2985,7 @@ public class GeoServerRESTPublisher {
         }
 
         final String xmlBody = re.toString();
+        LOGGER.warn("XML Body={}", xmlBody);
         final String sendResult = HTTPUtils.postXml(sbUrl.toString(), xmlBody, gsuser, gspass);
         if (sendResult != null) {
             if (LOGGER.isDebugEnabled()) {
