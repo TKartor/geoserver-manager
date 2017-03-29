@@ -1195,7 +1195,6 @@ public class GeoServerRESTPublisher {
         featureTypeEncoder.setName(datasetName);
         // Set native name
         String nativeName = FilenameUtils.getBaseName(shapefile.toString());
-        LOGGER.warn("Setting native nam='{}'", nativeName);
         featureTypeEncoder.setNativeName(nativeName);
         featureTypeEncoder.setTitle(title);
 
@@ -2985,7 +2984,6 @@ public class GeoServerRESTPublisher {
         }
 
         final String xmlBody = re.toString();
-        LOGGER.warn("XML Body={}", xmlBody);
         final String sendResult = HTTPUtils.postXml(sbUrl.toString(), xmlBody, gsuser, gspass);
         if (sendResult != null) {
             if (LOGGER.isDebugEnabled()) {
