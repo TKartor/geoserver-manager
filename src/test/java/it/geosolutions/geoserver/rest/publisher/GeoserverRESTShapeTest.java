@@ -143,7 +143,10 @@ public class GeoserverRESTShapeTest extends GeoserverRESTTest {
         File zipFile = new ClassPathResource("testdata/shapefile/cities.shp").getFile();
         
         // test insert
-        boolean published = publisher.publishShp(DEFAULT_WS, storeName, new NameValuePair[]{new NameValuePair("charset", "UTF-8")},datasetName, UploadMethod.EXTERNAL, zipFile.toURI(), "EPSG:4326",GSCoverageEncoderTest.WGS84,ProjectionPolicy.REPROJECT_TO_DECLARED,"polygon");
+        boolean published = publisher.publishShp(DEFAULT_WS, storeName,
+                        new NameValuePair[] { new NameValuePair("charset", "UTF-8") }, datasetName, datasetName,
+                        UploadMethod.EXTERNAL, zipFile.toURI(), "EPSG:4326", GSCoverageEncoderTest.WGS84,
+                        ProjectionPolicy.REPROJECT_TO_DECLARED, "polygon");
         assertTrue("publish() failed", published);
         assertTrue(existsLayer(datasetName));
         
@@ -177,7 +180,10 @@ public class GeoserverRESTShapeTest extends GeoserverRESTTest {
         File zipFile = new ClassPathResource("testdata/resttestshp.zip").getFile();
         
         // test insert
-        boolean published = publisher.publishShp(DEFAULT_WS, storeName, new NameValuePair[]{new NameValuePair("charset", "UTF-8")},datasetName, UploadMethod.FILE, zipFile.toURI(), "EPSG:4326",GSCoverageEncoderTest.WGS84,ProjectionPolicy.REPROJECT_TO_DECLARED,"polygon");
+        boolean published = publisher.publishShp(DEFAULT_WS, storeName,
+                        new NameValuePair[] { new NameValuePair("charset", "UTF-8") }, datasetName, datasetName,
+                        UploadMethod.FILE, zipFile.toURI(), "EPSG:4326", GSCoverageEncoderTest.WGS84,
+                        ProjectionPolicy.REPROJECT_TO_DECLARED, "polygon");
         assertTrue("publish() failed", published);
         assertTrue(existsLayer(datasetName));
         

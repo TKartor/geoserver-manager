@@ -1051,44 +1051,8 @@ public class GeoServerRESTPublisher {
      */
     public boolean publishShp(String workspace, String storename, String datasetname, File zipFile)
             throws FileNotFoundException, IllegalArgumentException {
-        return publishShp(workspace, storename, new NameValuePair[0], datasetname,
+        return publishShp(workspace, storename, new NameValuePair[0], datasetname, datasetname,
                 UploadMethod.FILE, zipFile.toURI(), DEFAULT_CRS, null);
-    }
-
-    /**
-     * Publish a shapefile.
-     * 
-     * @param workspace the name of the workspace to use
-     * @param storename the name of the store to create
-     * @param storeParams parameters to append to the url (can be null).<br>
-     *        Accepted parameters are:<br>
-     *        <ul>
-     *        <li><b>charset</b> used to set the charset</li>
-     *        </ul>
-     * @param layername the name of the layer to configure
-     * @param method {@link UploadMethod}
-     * @param fileUri the uri of the file containing the shapefile.It should be:
-     *        <ul>
-     *        <li>A zip file if 'method' is file</li>
-     *        <li>A shp file if 'method' is external</li>
-     *        <li>A zip file if 'method' is uri (UNTESTED)</li>
-     *        </ul>
-     * @param srs the SRS for this shapefile. It must be an ESPG code or GeoServer will choke.
-     * @param nativeCRS the nativeCRS for this shapefile. It can be an EPSG code (for {@link ProjectionPolicy#NONE} or a WKT for
-     *        {@link ProjectionPolicy#REPROJECT_TO_DECLARED}.
-     * @param policy {@link ProjectionPolicy}
-     * @param defaultStyle the default style to set (can be null).
-     * @return true if success false otherwise
-     * 
-     * @throws FileNotFoundException if file to upload is not found
-     * @throws IllegalArgumentException if any of the mandatory arguments are {@code null}.
-     */
-    public boolean publishShp(String workspace, String storeName, NameValuePair[] storeParams,
-            String datasetName, UploadMethod method, URI shapefile, String srs, String nativeCRS,
-            ProjectionPolicy policy, String defaultStyle) throws FileNotFoundException,
-            IllegalArgumentException {
-        return publishShp(workspace, storeName, storeParams, datasetName, datasetName, method, shapefile, srs,
-                        nativeCRS, policy, defaultStyle);
     }
 
     /**
@@ -1238,38 +1202,52 @@ public class GeoServerRESTPublisher {
 
     /**
      * Publish a shapefile.
-     * 
-     * @param workspace the name of the workspace to use
-     * @param storename the name of the store to create
-     * @param storeParams parameters to append to the url (can be null).<br>
-     *        Accepted parameters are:<br>
-     *        <ul>
-     *        <li><b>charset</b> used to set the charset</li>
-     *        </ul>
-     * @param layername the name of the layer to configure
-     * @param method {@link UploadMethod}
-     * @param fileUri the uri of the file containing the shapefile.It should be:
-     *        <ul>
-     *        <li>A zip file if 'method' is file</li>
-     *        <li>A shp file if 'method' is external</li>
-     *        <li>A zip file if 'method' is uri (UNTESTED)</li>
-     *        </ul>
-     * @param srs the SRS for this shapefile. It must be an ESPG code or GeoServer will choke. Notice that we can only use
-     *        {@link ProjectionPolicy#FORCE_DECLARED}.
-     * @param policy {@link ProjectionPolicy}
-     * @param defaultStyle the default style to set (can be null).
+     *
+     * @param workspace
+     *            the name of the workspace to use
+     * @param storename
+     *            the name of the store to create
+     * @param storeParams
+     *            parameters to append to the url (can be null).<br>
+     *            Accepted parameters are:<br>
+     *            <ul>
+     *            <li><b>charset</b> used to set the charset</li>
+     *            </ul>
+     * @param layername
+     *            the name of the layer to configure
+     * @param method
+     *            {@link UploadMethod}
+     * @param fileUri
+     *            the uri of the file containing the shapefile.It should be:
+     *            <ul>
+     *            <li>A zip file if 'method' is file</li>
+     *            <li>A shp file if 'method' is external</li>
+     *            <li>A zip file if 'method' is uri (UNTESTED)</li>
+     *            </ul>
+     * @param srs
+     *            the SRS for this shapefile. It must be an ESPG code or
+     *            GeoServer will choke. Notice that we can only use
+     *            {@link ProjectionPolicy#FORCE_DECLARED}.
+     * @param policy
+     *            {@link ProjectionPolicy}
+     * @param defaultStyle
+     *            the default style to set (can be null).
      * @return true if success false otherwise
-     * 
-     * @throws FileNotFoundException if file to upload is not found
-     * @throws IllegalArgumentException if any of the mandatory arguments are {@code null}.
-     * @deprecated use {@link #publishShp(String, String, NameValuePair[], String, UploadMethod, URI, String, String)} instead as the behaviour of
-     *             this method is misleading as it allows you to use wrong ProjectionPolicy values.
+     *
+     * @throws FileNotFoundException
+     *             if file to upload is not found
+     * @throws IllegalArgumentException
+     *             if any of the mandatory arguments are {@code null}.
+     * @deprecated use
+     *             {@link #publishShp(String, String, NameValuePair[], String, UploadMethod, URI, String, String)}
+     *             instead as the behaviour of this method is misleading as it
+     *             allows you to use wrong ProjectionPolicy values.
      */
     public boolean publishShp(String workspace, String storeName, NameValuePair[] storeParams,
             String datasetName, UploadMethod method, URI shapefile, String srs,
             ProjectionPolicy policy, String defaultStyle) throws FileNotFoundException,
             IllegalArgumentException {
-        return publishShp(workspace, storeName, storeParams, datasetName, method, shapefile, srs,
+        return publishShp(workspace, storeName, storeParams, datasetName, datasetName, method, shapefile, srs,
                 null, policy, defaultStyle);
     }
 
@@ -1327,104 +1305,141 @@ public class GeoServerRESTPublisher {
 
     /**
      * Publish a shapefile.
-     * 
-     * @param workspace the name of the workspace to use
-     * @param storename the name of the store to create
-     * @param storeParams parameters to append to the url (can be null).<br>
-     *        Accepted parameters are:<br>
-     *        <ul>
-     *        <li><b>charset</b> used to set the charset</li>
-     *        </ul>
-     * @param layername the name of the layer to configure
-     * @param method {@link UploadMethod}
-     * @param fileUri the uri of the file containing the shapefile.It should be:
-     *        <ul>
-     *        <li>A zip file if 'method' is file</li>
-     *        <li>A shp file if 'method' is external</li>
-     *        <li>A zip file if 'method' is uri (UNTESTED)</li>
-     *        </ul>
-     * @param srs the SRS for this shapefile. It must be an ESPG code or GeoServer will choke.
-     * @param defaultStyle the default style to set (can be null).
+     *
+     * @param workspace
+     *            the name of the workspace to use
+     * @param storename
+     *            the name of the store to create
+     * @param storeParams
+     *            parameters to append to the url (can be null).<br>
+     *            Accepted parameters are:<br>
+     *            <ul>
+     *            <li><b>charset</b> used to set the charset</li>
+     *            </ul>
+     * @param layername
+     *            the name of the layer to configure
+     * @param method
+     *            {@link UploadMethod}
+     * @param fileUri
+     *            the uri of the file containing the shapefile.It should be:
+     *            <ul>
+     *            <li>A zip file if 'method' is file</li>
+     *            <li>A shp file if 'method' is external</li>
+     *            <li>A zip file if 'method' is uri (UNTESTED)</li>
+     *            </ul>
+     * @param srs
+     *            the SRS for this shapefile. It must be an ESPG code or
+     *            GeoServer will choke.
+     * @param defaultStyle
+     *            the default style to set (can be null).
      * @return true if success false otherwise
-     * 
-     * @throws FileNotFoundException if file to upload is not found
-     * @throws IllegalArgumentException if any of the mandatory arguments are {@code null}.
+     *
+     * @throws FileNotFoundException
+     *             if file to upload is not found
+     * @throws IllegalArgumentException
+     *             if any of the mandatory arguments are {@code null}.
      */
     public boolean publishShp(String workspace, String storeName, NameValuePair[] storeParams,
-            String datasetName, UploadMethod method, URI shapefile, String srs, String defaultStyle)
+                    String datasetName, String title, UploadMethod method, URI shapefile, String srs,
+                    String defaultStyle)
             throws FileNotFoundException, IllegalArgumentException {
-        return publishShp(workspace, storeName, storeParams, datasetName, method, shapefile, srs,
+        return publishShp(workspace, storeName, storeParams, datasetName, title, method, shapefile, srs,
                 null, ProjectionPolicy.FORCE_DECLARED, defaultStyle);
     }
 
     /**
      * Publish a zipped shapefile.
-     * 
+     *
      * @see {@link #publishShp(String, String, NameValuePair[], String, UploadMethod, URI, String, ProjectionPolicy, String)}
-     * 
-     * @param workspace the name of the workspace to use
-     * @param storename the name of the store to create
-     * @param layerName the name of the layer to configure
-     * @param zipFile The zipped file to publish
-     * @param srs the srs for this shapefile. It will be forced to use this one in GeoServer using {@link ProjectionPolicy#FORCE_DECLARED}.
-     * @param defaultStyle the default style to set (can be null).
-     * 
+     *
+     * @param workspace
+     *            the name of the workspace to use
+     * @param storename
+     *            the name of the store to create
+     * @param layerName
+     *            the name of the layer to configure
+     * @param zipFile
+     *            The zipped file to publish
+     * @param srs
+     *            the srs for this shapefile. It will be forced to use this one
+     *            in GeoServer using {@link ProjectionPolicy#FORCE_DECLARED}.
+     * @param defaultStyle
+     *            the default style to set (can be null).
+     *
      * @return {@code true} if the operation completed successfully
-     * @throws FileNotFoundException if file to upload is not found
-     * @throws IllegalArgumentException if any of the mandatory arguments are {@code null}.
+     * @throws FileNotFoundException
+     *             if file to upload is not found
+     * @throws IllegalArgumentException
+     *             if any of the mandatory arguments are {@code null}.
      */
     public boolean publishShp(String workspace, String storename, String layerName, File zipFile,
             String srs, String defaultStyle) throws FileNotFoundException, IllegalArgumentException {
 
-        return publishShp(workspace, storename, (NameValuePair[]) null, layerName,
+        return publishShp(workspace, storename, (NameValuePair[]) null, layerName, layerName,
                 UploadMethod.FILE, zipFile.toURI(), srs, defaultStyle);
     }
 
     /**
      * Publish a zipped shapefile forcing the srs to the one provided.
-     * 
+     *
      * @see {@link #publishShp(String, String, NameValuePair[], String, UploadMethod, URI, String, ProjectionPolicy, String)}
-     * 
-     * @param workspace the name of the workspace to use
-     * @param storename the name of the store to create
-     * @param layername the name of the layer to configure
-     * @param zipFile The zipped file to publish
-     * @param srs the CRS for this shapefile. It must be an EPSG CODE !
-     * 
+     *
+     * @param workspace
+     *            the name of the workspace to use
+     * @param storename
+     *            the name of the store to create
+     * @param layername
+     *            the name of the layer to configure
+     * @param zipFile
+     *            The zipped file to publish
+     * @param srs
+     *            the CRS for this shapefile. It must be an EPSG CODE !
+     *
      * @return {@code true} if the operation completed successfully.
-     * @throws FileNotFoundException if file to upload is not found
-     * @throws IllegalArgumentException if any of the mandatory arguments are {@code null}.
+     * @throws FileNotFoundException
+     *             if file to upload is not found
+     * @throws IllegalArgumentException
+     *             if any of the mandatory arguments are {@code null}.
      */
     public boolean publishShp(String workspace, String storename, String layername, File zipFile,
             String srs) throws FileNotFoundException {
-        return publishShp(workspace, storename, (NameValuePair[]) null, layername,
+        return publishShp(workspace, storename, (NameValuePair[]) null, layername, layername,
                 UploadMethod.FILE, zipFile.toURI(), srs, null);
     }
 
     /**
      * Publish a zipped shapefile.
-     * 
+     *
      * @see {@link #publishShp(String, String, NameValuePair[], String, UploadMethod, URI, String, ProjectionPolicy, String)}
-     * 
-     * @param workspace the name of the workspace to use
-     * @param storename the name of the store to create
-     * @param layername the name of the layer to configure
-     * @param zipFile the zip file containing the shapefile
-     * @param srs the shapefile srs. This must be an EPSG Codefor this code to work!
-     * @param params parameters to append to the url (can be null).<br>
-     *        Accepted parameters are:<br>
-     *        <ul>
-     *        <li><b>charset</b> used to set the charset</li>
-     *        </ul>
+     *
+     * @param workspace
+     *            the name of the workspace to use
+     * @param storename
+     *            the name of the store to create
+     * @param layername
+     *            the name of the layer to configure
+     * @param zipFile
+     *            the zip file containing the shapefile
+     * @param srs
+     *            the shapefile srs. This must be an EPSG Codefor this code to
+     *            work!
+     * @param params
+     *            parameters to append to the url (can be null).<br>
+     *            Accepted parameters are:<br>
+     *            <ul>
+     *            <li><b>charset</b> used to set the charset</li>
+     *            </ul>
      * @return {@code true} if the operation completed successfully.
-     * @throws FileNotFoundException if file to upload is not found
-     * @throws IllegalArgumentException if any of the mandatory arguments are {@code null}.
+     * @throws FileNotFoundException
+     *             if file to upload is not found
+     * @throws IllegalArgumentException
+     *             if any of the mandatory arguments are {@code null}.
      */
     public boolean publishShp(String workspace, String storename, String layername, File zipFile,
             String srs, NameValuePair... params) throws FileNotFoundException,
             IllegalArgumentException {
 
-        return publishShp(workspace, storename, params, layername, UploadMethod.FILE,
+        return publishShp(workspace, storename, params, layername, layername, UploadMethod.FILE,
                 zipFile.toURI(), srs, null);
     }
 
@@ -2984,6 +2999,7 @@ public class GeoServerRESTPublisher {
         }
 
         final String xmlBody = re.toString();
+        LOGGER.warn("XML Body={}", xmlBody);
         final String sendResult = HTTPUtils.postXml(sbUrl.toString(), xmlBody, gsuser, gspass);
         if (sendResult != null) {
             if (LOGGER.isDebugEnabled()) {
